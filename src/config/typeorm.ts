@@ -1,0 +1,27 @@
+/* eslint-disable */
+
+import { registerAs } from "@nestjs/config";
+import { config as dotenvConfig } from 'dotenv';
+import { DataSource, DataSourceOptions } from "typeorm";
+
+dotenvConfig({ path: '.env' });
+
+const config = {
+    type: 'postgres',
+    host: `${process.env.DB_HOST}`,
+    port: `${process.env.DB_PORT}`,
+    username: `${process.env.DB_USERNAME}`,
+    password: `${process.env.DB_PASSWORD}`,
+    database: `${process.env.DB_DATABASE}`,
+   // entities: ["dist/**/*.entity{.ts,.js}"],
+  //  migrations: ["dist/migrations/*{.ts,.js}"],
+   entities: [__dirname + '/../*/.entity.{js,ts}'],
+   // migrations: ['src/migrations/*.{ts,js}'],
+   migrations: [__dirname + '/../migrations/*.{ts,js}'],
+ // migrations:['src\migrations\1688238135774-$npm_config_name.ts'],
+    autoLoadEntities: true,
+    synchronize: false,
+}
+
+export default registerAs('typeorm', () => config)
+export const connectionSource = new DataSource(config as DataSourceOptions);
