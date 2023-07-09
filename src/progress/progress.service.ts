@@ -9,7 +9,7 @@ import { Progress } from './progress.entity';
 import  User  from '../auth/user.entity';
 import  Relay  from '../relay/relay.entity';
 import type { Repository } from 'typeorm';
-
+import { GetProgressesResponse,ProgressDto } from './dto/getProgress.dto';
 
 @Injectable()
 export class ProgressService {
@@ -102,6 +102,47 @@ console.log("result points =", result?.relay?.points);
 
 return result?.relay?.points || 0;
 }
+
+
+
+async getProgressesForRelay(relayId: string): Promise<GetProgressesResponse> {
+  try {
+    const progresses = await this.progressRepository
+      .createQueryBuilder('progress')
+      .leftJoinAndSelect('progress.relay', 'relay')
+      .leftJoinAndSelect('progress.user', 'user')
+      .leftJoinAndSelect('progress.LikedByUser', 'likedUser')
+      .where('relay.id = :relayId', { relayId })
+      .getMany();
+console.log("progresses =",progresses)
+    const formattedProgresses: ProgressDto[] = progresses.map(progress => ({
+      id: progress.id,
+      message: progress.message,
+      user: {
+        id: progress.user.id,
+        username: progress.user.username,
+        email: progress.user.email,
+      },
+      relay: {
+        id: progress.relay.id,
+        goal: progress.relay.goal,
+        frequency: progress.relay.frequency,
+        start_date: progress.relay.start_date,
+        end_date: progress.relay.end_date,
+        type: progress.relay.type,
+        // Include other relay properties if needed
+      },
+      totalLikes: progress.LikedByUser.length,
+    }));
+
+
+    console.log("formatted progresses is=",formattedProgresses)
+    return { progresses: formattedProgresses };
+  } catch (error) {
+    throw new Error('Failed to retrieve progresses for relay');
+  }
+}
+
 
   
 }

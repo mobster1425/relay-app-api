@@ -270,6 +270,7 @@ console.log("join relays are =",joinedRelays)
         goal: relay.goal,
         start_date: relay.start_date,
         end_date: relay.end_date,
+        type: relay.type,
         total_points: relay.points,
        // total_teammates: relay.RelayJoinedByUser.length,
        total_teammates: relay.RelayJoinedByUser ? relay.RelayJoinedByUser.length : 0,

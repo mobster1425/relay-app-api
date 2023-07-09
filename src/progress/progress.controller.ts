@@ -65,5 +65,10 @@ export class ProgressController {
     return this.progressService.getPointsByUser(relay,user);
   }
 
+  @Get('relay/:relayId')
+  async getProgressesForRelay(@Param('relayId') relayId: string) {
+    return this.progressService.getProgressesForRelay(relayId);
+  }
+
 }
 

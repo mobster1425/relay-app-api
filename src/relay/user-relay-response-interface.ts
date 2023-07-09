@@ -1,4 +1,5 @@
 /* eslint-disable */
+import { RelayType } from "./dto/relay.dto";
 
 export interface GetUserRelaysResponse {
     myRelays: RelayDto1[];
@@ -9,6 +10,7 @@ export interface GetUserRelaysResponse {
     goal: string;
     start_date: Date;
     end_date: Date;
+    type: RelayType;
     total_points: number;
     total_teammates: number;
     status: string;
