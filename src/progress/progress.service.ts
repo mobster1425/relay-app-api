@@ -9,7 +9,7 @@ import { Progress } from './progress.entity';
 import  User  from '../auth/user.entity';
 import  Relay  from '../relay/relay.entity';
 import type { Repository } from 'typeorm';
-import { GetProgressesResponse,ProgressDto } from './dto/getProgress.dto';
+import { GetProgressesResponse,ProgressDto,RelayDto3 } from './dto/getProgress.dto';
 
 @Injectable()
 export class ProgressService {
@@ -123,21 +123,23 @@ console.log("progresses =",progresses)
         username: progress.user.username,
         email: progress.user.email,
       },
-      relay: {
-        id: progress.relay.id,
-        goal: progress.relay.goal,
-        frequency: progress.relay.frequency,
-        start_date: progress.relay.start_date,
-        end_date: progress.relay.end_date,
-        type: progress.relay.type,
-        // Include other relay properties if needed
-      },
       totalLikes: progress.LikedByUser.length,
     }));
 
+    const relay: RelayDto3 = {
+      id: progresses[0]?.relay?.id,
+      goal: progresses[0]?.relay?.goal,
+      frequency: progresses[0]?.relay?.frequency,
+      start_date: progresses[0]?.relay?.start_date,
+      end_date: progresses[0]?.relay?.end_date,
+      type: progresses[0]?.relay?.type,
+      // Include other relay properties if needed
+    };
+
 
     console.log("formatted progresses is=",formattedProgresses)
-    return { progresses: formattedProgresses };
+    console.log("formatted relay=",relay)
+    return { progresses: formattedProgresses, relay };
   } catch (error) {
     throw new Error('Failed to retrieve progresses for relay');
   }

@@ -2,6 +2,7 @@
 
 export interface GetProgressesResponse {
     progresses: ProgressDto[];
+    relay: RelayDto3;
   }
   enum RelayType {
     HEALTH = 'health',
@@ -18,15 +19,15 @@ export interface GetProgressesResponse {
       username: string;
       email: string;
     };
-    relay: {
-      id: string;
-      goal: string;
+    totalLikes: number;
+  }
+  
+  export interface RelayDto3 {
+    id: string;
+    goal: string;
     type: RelayType;
     frequency: number;
     start_date: Date;
     end_date: Date;
-      // Include other relay properties if needed
-    };
-    totalLikes: number;
+    // Include other relay properties if needed
   }
-  
